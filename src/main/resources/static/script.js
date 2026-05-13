@@ -14,6 +14,10 @@ fetch('/api/products')
         <h2>${product.name}</h2>
         <p>${product.price}円</p>
         <p>${product.description}</p>
+
+          <button onclick="deleteProduct(${product.id})">
+            削除
+          </button>
       `;
 
       productList.appendChild(div);
@@ -42,3 +46,11 @@ form.addEventListener('submit', async (event) => {
 
     location.reload();
 });
+async function deleteProduct(id) {
+
+    await fetch(`/api/products/${id}`, {
+        method: 'DELETE'
+    });
+
+    location.reload();
+}
