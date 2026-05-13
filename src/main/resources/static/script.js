@@ -19,3 +19,26 @@ fetch('/api/products')
       productList.appendChild(div);
     });
 });
+
+const form = document.getElementById('product-form');
+
+form.addEventListener('submit', async (event) => {
+
+    event.preventDefault();
+
+    const product = {
+        name: document.getElementById('name').value,
+        price: document.getElementById('price').value,
+        description: document.getElementById('description').value
+    };
+
+    await fetch('/api/products', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(product)
+    });
+
+    location.reload();
+});
