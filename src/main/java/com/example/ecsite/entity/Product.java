@@ -40,4 +40,16 @@ public class Product {
     public String getDescription() {
         return description;
     }
+
+    public void setName(String name) {
+    this.name = name;
+    }  
+
+    public void setPrice(Integer price) {
+    this.price = price;
+    }
+
+    public void setDescription(String description) {
+    this.description = description;
+    }
 }
