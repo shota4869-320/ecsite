@@ -38,9 +38,18 @@ form.addEventListener('submit', async (event) => {
 
     const product = {
         name: document.getElementById('name').value,
-        price: document.getElementById('price').value,
+        price: Number(document.getElementById('price').value),
         description: document.getElementById('description').value
     };
+    if (!product.name || !document.getElementById('price').value || !product.description) {
+    alert('すべての項目を入力してください');
+    return;
+    }
+
+    if (Number(product.price) < 0) {
+    alert('価格は0円以上で入力してください');
+    return;
+    }
 
     if (editingProductId) {
 
@@ -67,6 +76,12 @@ form.addEventListener('submit', async (event) => {
 });
 async function deleteProduct(id) {
 
+    const result = confirm('本当に削除しますか？');
+
+    if (!result) {
+        return;
+    }
+
     await fetch(`/api/products/${id}`, {
         method: 'DELETE'
     });
@@ -80,4 +95,5 @@ function editProduct(id, name, price, description) {
     document.getElementById('name').value = name;
     document.getElementById('price').value = price;
     document.getElementById('description').value = description;
+    document.getElementById('submit-button').textContent = '更新';
 }
