@@ -1,3 +1,5 @@
+ let editingProductId = null;
+
 fetch('/api/products')
   .then(response => response.json())
   .then(data => {
@@ -15,6 +17,10 @@ fetch('/api/products')
         <p>${product.price}円</p>
         <p>${product.description}</p>
 
+
+          <button onclick="editProduct(${product.id}, '${product.name}', ${product.price}, '${product.description}')">
+           編集
+          </button>
           <button onclick="deleteProduct(${product.id})">
             削除
           </button>
@@ -36,13 +42,26 @@ form.addEventListener('submit', async (event) => {
         description: document.getElementById('description').value
     };
 
-    await fetch('/api/products', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(product)
-    });
+    if (editingProductId) {
+
+        await fetch(`/api/products/${editingProductId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        });
+
+    } else {
+
+        await fetch('/api/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(product)
+        });
+    }
 
     location.reload();
 });
@@ -53,4 +72,12 @@ async function deleteProduct(id) {
     });
 
     location.reload();
+}
+function editProduct(id, name, price, description) {
+
+    editingProductId = id;
+
+    document.getElementById('name').value = name;
+    document.getElementById('price').value = price;
+    document.getElementById('description').value = description;
 }
